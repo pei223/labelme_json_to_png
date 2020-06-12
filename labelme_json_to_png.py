@@ -38,20 +38,24 @@ for json_file_path in tqdm.tqdm(list(json_dir_path.glob("*.json"))):
     subprocess.run(["labelme_json_to_dataset", str(json_file_path), "-o", str(temp_dir_path)], stdout=subprocess.PIPE,
                    stderr=subprocess.PIPE, text=True)
 
-    image: Image.Image = Image.open(str(temp_dir_path.joinpath("label.png")))
+    image = Image.open(str(temp_dir_path.joinpath("label.png"))).convert("P")
     origin_color_palette = image.getpalette()
-
     image_array = np.array(image)
+
     # Fix label.
+    label_indexes = {}
     with open(str(temp_dir_path.joinpath("label_names.txt")), "r") as label_file:
         for label_num, label_name in enumerate(label_file):
             label_name = label_name.replace("\n", "")
             if label_name == "_background_":
                 continue
+            label_indexes[label_name] = (image_array == label_num)
+
+        for label_name, label_index in label_indexes.items():
             correct_label_num = correct_label_dict[label_name]
-            image_array[image_array == label_num] = correct_label_num
-    new_image = Image.fromarray(image_array)
-    new_image.convert("P")
+            image_array[label_index] = correct_label_num
+
+    new_image = Image.fromarray(image_array, mode="P")
     new_image.putpalette(origin_color_palette)
     new_image.save(str(out_dir_path.joinpath(json_file_path.name).with_suffix(".png")))
 
