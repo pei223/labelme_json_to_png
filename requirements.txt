@@ -3,7 +3,7 @@ imgviz==1.1.0
 kiwisolver==1.2.0
 labelme==4.4.0
 matplotlib==3.2.1
-numpy==1.18.5
+numpy==1.22.0
 Pillow==7.1.2
 pyparsing==2.4.7
 PyQt5==5.15.0
