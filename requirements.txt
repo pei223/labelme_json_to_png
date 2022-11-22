@@ -4,7 +4,7 @@ kiwisolver==1.2.0
 labelme==4.4.0
 matplotlib==3.2.1
 numpy==1.18.5
-Pillow==7.1.2
+Pillow==9.3.0
 pyparsing==2.4.7
 PyQt5==5.15.0
 PyQt5-sip==12.8.0
